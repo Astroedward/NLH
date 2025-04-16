@@ -1,0 +1,226 @@
+// File: src/App.jsx
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import './App.css';
+
+const slides1 = [
+  { title: "🎯 Skill Over Luck", content: "To me, poker isn’t about luck—it’s a battlefield..." },
+  { title: "⚔️ Selective Aggression", content: "I don’t just bet for the sake of it—I pick my spots..." },
+  { title: "🌀 The Luck/Skill Paradox", content: "Poker is 100% luck and 100% skill..." },
+  { title: "💧 Be Like Water", content: "If they can read me, they can beat me..." },
+  { title: "🧠 Psych Warfare", content: "I get in their heads..." },
+  { title: "👁️‍🗨️ Read or Be Read", content: "I don’t just play the cards—I play the people..." },
+  { title: "💣 Bluffouts Poker", content: "I call it Bluffouts Poker..." },
+  { title: "📍 Position is Power", content: "“Last is basically best.” When I act last, I know more..." },
+  { title: "🌪️ Poker = Life", content: "Poker taught me how to live..." }
+];
+
+export default function App() {
+  const [index, setIndex] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(false);
+
+  const next = () => setIndex(prev => (prev + 1 < slides1.length ? prev + 1 : prev));
+  const prev = () => setIndex(prev => (prev > 0 ? prev - 1 : prev));
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay) return;
+    const timer = setInterval(() => {
+      setIndex(prev => (prev + 1 < slides1.length ? prev + 1 : prev));
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [autoPlay, index]);
+
+  const slide = slides1[index];
+
+  return (
+    <main className="min-h-screen bg-gray-900 text-gray-200 flex flex-col items-center justify-center px-4 py-10">
+      <div className="max-w-2xl w-full bg-gray-800 p-8 rounded-2xl shadow-2xl">
+        <h2 className="text-center text-3xl font-bold text-yellow-400 mb-6">♠️ The Poker Narrative Panel 🧠</h2>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="mb-6"
+          >
+            <h3 className="text-xl font-semibold text-yellow-300 mb-2">{slide.title}</h3>
+            <p className="text-gray-300 leading-relaxed">{slide.content}</p>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={prev}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition"
+            disabled={index === 0}
+          >⬅️ Back</button>
+
+          <button
+            onClick={next}
+            className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-bold hover:bg-yellow-500 transition"
+            disabled={index === slides1.length - 1}
+          >➡️ Next</button>
+        </div>
+
+        <p className="text-center text-sm text-gray-400 mt-4">
+          Slide {index + 1} of {slides1.length}
+        </p>
+
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setAutoPlay(!autoPlay)}
+            className="mt-2 text-sm underline text-gray-400 hover:text-gray-200"
+          >
+            {autoPlay ? '⏸ Pause Autoplay' : '▶️ Start Autoplay'}
+          </button>
+        </div>
+
+        <div className="h-2 bg-gray-700 rounded mt-6 overflow-hidden">
+          <div
+            className="h-full bg-yellow-400 transition-all duration-300"
+            style={{ width: `${((index + 1) / slides1.length) * 100}%` }}
+          />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// File: src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// File: tailwind.config.js
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+// File: src/App.jsx
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import './App.css';
+
+const slides1 = [
+  { title: "🎯 Skill Over Luck", content: "To me, poker isn’t about luck—it’s a battlefield..." },
+  { title: "⚔️ Selective Aggression", content: "I don’t just bet for the sake of it—I pick my spots..." },
+  { title: "🌀 The Luck/Skill Paradox", content: "Poker is 100% luck and 100% skill..." },
+  { title: "💧 Be Like Water", content: "If they can read me, they can beat me..." },
+  { title: "🧠 Psych Warfare", content: "I get in their heads..." },
+  { title: "👁️‍🗨️ Read or Be Read", content: "I don’t just play the cards—I play the people..." },
+  { title: "💣 Bluffouts Poker", content: "I call it Bluffouts Poker..." },
+  { title: "📍 Position is Power", content: "“Last is basically best.” When I act last, I know more..." },
+  { title: "🌪️ Poker = Life", content: "Poker taught me how to live..." }
+];
+
+export default function App() {
+  const [index, setIndex] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(false);
+
+  const next = () => setIndex(prev => (prev + 1 < slides1.length ? prev + 1 : prev));
+  const prev = () => setIndex(prev => (prev > 0 ? prev - 1 : prev));
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay) return;
+    const timer = setInterval(() => {
+      setIndex(prev => (prev + 1 < slides1.length ? prev + 1 : prev));
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [autoPlay, index]);
+
+  const slide = slides1[index];
+
+  return (
+    <main className="min-h-screen bg-gray-900 text-gray-200 flex flex-col items-center justify-center px-4 py-10">
+      <div className="max-w-2xl w-full bg-gray-800 p-8 rounded-2xl shadow-2xl">
+        <h2 className="text-center text-3xl font-bold text-yellow-400 mb-6">♠️ The Poker Narrative Panel 🧠</h2>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="mb-6"
+          >
+            <h3 className="text-xl font-semibold text-yellow-300 mb-2">{slide.title}</h3>
+            <p className="text-gray-300 leading-relaxed">{slide.content}</p>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={prev}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-700 transition"
+            disabled={index === 0}
+          >⬅️ Back</button>
+
+          <button
+            onClick={next}
+            className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-bold hover:bg-yellow-500 transition"
+            disabled={index === slides1.length - 1}
+          >➡️ Next</button>
+        </div>
+
+        <p className="text-center text-sm text-gray-400 mt-4">
+          Slide {index + 1} of {slides1.length}
+        </p>
+
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setAutoPlay(!autoPlay)}
+            className="mt-2 text-sm underline text-gray-400 hover:text-gray-200"
+          >
+            {autoPlay ? '⏸ Pause Autoplay' : '▶️ Start Autoplay'}
+          </button>
+        </div>
+
+        <div className="h-2 bg-gray-700 rounded mt-6 overflow-hidden">
+          <div
+            className="h-full bg-yellow-400 transition-all duration-300"
+            style={{ width: `${((index + 1) / slides1.length) * 100}%` }}
+          />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// File: src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// File: tailwind.config.js
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
